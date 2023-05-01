@@ -1,0 +1,94 @@
+- Uma imagem Docker é um arquivo imutável e a partir dele um ou mais containers podem ser gerados. 
+
+- Uma imagem pode ser criada a partir do comando docker build, seguindo as instruções contidas em um arquivo chamado Dockerfile.
+    - build(‘construir’ em português);
+    - O Dockerfile é um arquivo que contém as instruções necessárias (como uma receita) para construirmos a imagem Docker exatamente como desejamos. Esse arquivo nos mostra as bibliotecas que devem ser instaladas, arquivos que devem ser inicializados etc.
+
+- docker pull <nome-da-imagem> | Baixa e salva uma imagem do Docker Hub diretamente do Registry sem precisar executar.
+    Ex.: docker pull alpine:3.14
+    Neste exemplo foi obtida a imagem alpine, com a tag específica 3.14.
+
+- É possível ter vários contêineres a partir de uma imagem Docker!
+- Mesmo baseado na mesma Imagem Docker, os containers executam em contextos diferentes.
+
+- docker rmi <id-da-img> | Para remover uma imagem Docker do computador.
+    - rmi é um acrônimo das palavras ReMover Imagem
+
+- docker system prune -af | Remove todos os containers e imagens Docker que estejam no computador.
+
+- Algumas anotações sobre dockerfile:
+
+    - FROM | significa que vamos começar a construção desta imagem a partir da imagem Docker já existente!
+
+    - CMD | mostra qual comando deve ser utilizado ao iniciar a imagem como um container;
+        -O comando CDM aceita uma lista de parâmetros ou apenas comandos, sem declarar como uma lista.
+        Exemplos:   CMD ["echo", "Eu sou uma pessoa estudante da Trybe!"]
+                    CMD echo "olá mundo"
+
+- docker build <flags> -t <nome-da-imagem> <contexto> | Para construir uma imagem docker.
+    - -t | indicará qual será o nome da imagem, e também a tag, se utilizar o formato <nome>:<tag>
+    - Um contexto, ou seja, em qual caminho de pasta o Docker deve se basear para processar o arquivo Dockerfile.
+        - Normalmente utilizamos apenas . (ponto final), que indica a pasta atual.
+
+- COPY | Copia um arquivo no computador local e coloca-o dentro da imagem, no caminho especificado à frente. 
+    Exemplo de acordo com o exercício proposto:
+      - A linha vai copiar o arquivo index.html, que está na pasta atual da execução do comando docker build, e vai copiá-lo para o caminho /usr/local/apache2/htdocs/, dentro da imagem!
+
+- ADD index.html /usr/local/apache2/htdocs | Alternativa para o comando COPY.
+  - o comando ADD tem duas funcionalidades interessantes, tais como:
+    - Fazer o download do conteúdo de uma URL \<src> na pasta de destino \<dest>
+    - Descompactar automaticamente arquivos compactados de formatos reconhecidos (.tar, .gzip, .bzip2, etc)
+
+- EXPOSE 80 | Indica que a imagem poderá receber conexões pelo número da porta que for informado;
+
+- CMD ["httpd-foreground"] | Especifica que o programa httpd-foreground seja executado ao iniciar essa imagem como um container.
+    - Este programa já veio junto com a imagem base, portanto não precisamos nos preocupar.
+
+- docker run --rm -d -p 1234:80 --name meu-container meu-servidor-web
+    - Ao usar o comando docker run, uma nova flag foi utilizada: -p 1234:80
+    - O navegador não foi usada a porta 80 como exposto no Dockerfile, e sim a porta 1234
+    - Um container Docker é um processo totalmente isolado do computador principal, então mesmo declarando EXPOSE no arquivo Dockerfile, ainda não é o suficiente para expor a porta do container para o nosso computador.
+    - -p | Com essa flag foi solicitado ao Docker que abra uma exceção neste isolamento, fazendo um mapeamento da porta 1234 do nosso computador para a porta 80, dentro da rede do container.
+    - Logo, ao fazer uma conexão na porta 1234 do nosso computador, estamos na verdade fazendo uma conexão na porta 80 dentro do container.
+
+- CRIANDO OS ARQUIVOS PARA O NOVO SERVIDOR WEB COM HUGO E NGINX!
+    - Pasta => servidor-web-com-hugo-e-nginx
+
+- O objetivo da ferramenta Hugo é facilitar a criação de páginas, de modo que as pessoas possam focar mais em escrever o conteúdo do que se preocupar com tags HTML das páginas.
+
+- AS | Prefixo utilizado para nomear o estágio atual.
+- WORKDIR /site | Indica para o Docker qual é a pasta atual de trabalho dentro da imagem.
+- COPY com três linhas => copia os três arquivos no formato de pastas que o Hugo espera que estes arquivos estejam.
+- RUN com três linhas
+    => Linha 1 => instala o ferramenta Hugo na nossa imagem Docker
+    => Linha 2 => executa o comando hugo –minify –gc para gerar as páginas finais em HTML, baseados nos arquivos de templates (index.html) e conteúdos (_index.md).
+    => Linha 3 => executa o comando mv para mover as páginas resultantes do Hugo para o caminho onde o nginx espera que tenha páginas HTML para serem servidas.
+- ENTRYPOINT | indica para o Docker qual comando deve ser executado ao iniciar o container.
+    - Exemplo: ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+- IMAGEM DOCKER APENAS COM O NGINX E AS PÁGINAS GERADAS PELO HUGO!
+
+- É possível criar imagens intermediárias com apenas um arquivo Dockerfile!
+
+- RUN vs. ENTRYPOINT vs. CMD
+    - RUN é a execução imediata durante o build;
+    - ENTRYPOINT é a execução obrigatória ao iniciar o container;
+    - CMD é uma sugestão de parâmetros ao iniciar o container.
+
+
+- RUN <comando> <argumento1> <argumento2> <argumentoN> | Indica que o comando dado deve ser executado durante a construção da imagem Docker.
+    - É muito comum utilizar o RUN para fazer instalações de dependências.
+
+- ENTRYPOINT <comando> <argumento1> <argumento2> <argumentoN> | Indica qual é o comando (e seus argumentos) que deve ser executado ao iniciar esta imagem Docker como um container.
+    - Considere o ENTRYPOINT como obrigação de comando a ser executado. Ele sempre será utilizado como ponto de entrada da imagem.
+
+- CMD <comando> <argumento1> <argumento2> <argumentoN> |  Indica qual é o comando (e seus argumentos) que pode ser executado ao iniciar esta imagem Docker como um container.
+    - Conside o CMD como sugestão de comando a ser executado.
+    - Ele pode ser substituído ao executar o comando docker run imagem <comando> <argumento1>.
+
+- ENTRYPOINT e CMD parecem ter a mesma funcionalidade, mas na prática eles são complementares!
+
+
+
+
+
