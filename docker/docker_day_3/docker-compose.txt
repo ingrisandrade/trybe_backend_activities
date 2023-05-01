@@ -1,0 +1,128 @@
+- ANOTAÇÕES SOBRE DOCKER COMPOSE!
+
+- Todo arquivo docker-compose.yaml deve iniciar com a chave version.
+    - Exemplo: version: '3'
+
+- Todo container é criado a partir de uma imagem. Sendo assim, precisamos especificá-las aos nossos serviços.
+    - image: | especifica uma imagem Docker pronta, seja local ou a ser baixada no Docker Hub;
+    - build: | especifica a pasta contendo um arquivo Dockerfile a partir do qual o Compose vai executar o comando docker build automaticamente.
+
+- MAPEAMENTO DE PORTAS!
+
+- Dentro de cada serviço, podemos especificar o ports, que é uma lista de mapeamentos de portas entre o computador local e as portas do container.
+- O primeiro parâmetro é sempre a porta do computador local e o segundo parâmetro é a porta exposta no container.
+
+- E SE O CONTAINER APRESENTAR UM PROBLEMA?
+
+- O Compose nos permite configurar uma política de reinicialização!
+    - restart | Chave para configurar este comportamente:
+      - O Compose possui quatro políticas de reinicialização, sendo elas:
+        - no | define que o container não reiniciará automaticamente (Padrão);
+        - on-failure | define que o container será reiniciado caso ocorra alguma falha apontada pelo exit code, diferente de zero;
+        - always | especifica que sempre que o serviço parar, seja por um falha ou porque ele simplesmente finalizou sua execução, ele deverá ser reiniciado;
+        - unless-stopped | define que o container sempre será reiniciado, a menos que utilizemos o comando docker stop <container> manualmente.
+
+- USANDO VARIAVÉIS DE AMBIENTE:
+
+- Uma variável de ambiente é um recurso disponível nos sistemas operacionais que permite criar uma variável no formato NOME_DA_VARIÁVEL=VALOR. Onde NOME_DA_VARIÁVEL é o nome da variável de ambiente, e VALOR se refere a um valor que será vinculado à variável.
+    - Exemplo => Ao digitar o seguinte comando: echo $USER
+    - Será apresentado o valor da variável de ambiente $USER, cujo valor é o nome de usuário da pessoa que está utilizando o sistema no momento da execução.
+
+- environment | Chave utilizada para criar e usar variavéis de ambiente dentro dos containers.
+
+- DB_HOST | Nome do serviço onde o banco de dados vai rodar.
+
+- A ideia de variáveis de ambiente é trazer mais dinamismo entre ambientes.
+- Em cada ambiente a aplicação consegue se conectar em banco de dados diferentes, isolando assim o ambiente de teste e o de produção.
+
+- DEPENDÊNCIA ENTRE SERVIÇOS!
+
+- depends_on | Cahve de config. importante para garantir a ordem de inicialização e encerramento dos nossos serviços.
+
+- A configuração segue da seguinte forma:
+    - Três serviços, um deles usando uma imagem Docker pronta e dois com arquivo Dockerfile;
+    - Mapeamos as portas de conexão;
+    - Configuramos a política de reinicialização;
+    - Criamos uma variável de ambiente;
+    - Definimos a ordem de subida dos serviços.
+
+- SUBINDO TODOS OS SERVIÇOS!
+
+- docker-compose up -d | Comando para a execução do compose.
+    - -d | serve para executarmos todos os serviços no modo segundo plano.
+        - Sem esta flag, os logs dos três serviços aparecem no console simultaneamente, dificultando a leitura.
+    - docker-compose logs <nome-do-serviço> | Comando para ler os logs de cada um dos serviços posteriormente, caso o compose suba sem a flag -d.
+
+- Além de executar os containers, o Compose vai criar uma rede virtual padrão entre esses containers , permitindo a comunicação entre eles.
+
+- docker-compose ps | Para visualizar o status dos nossos serviços.
+    - Este comando traz um resumo do nome interno dos containers , se os containers estão saudáveis e se as portas foram mapeadas corretamente.
+
+- http://localhost:3000 | Para acessar o frontend e verificar se deu tudo certo. 
+
+- RECONSTRUINDO A IMAGEM DOCKER
+
+- --build | Flag utilizada para deixar nítido que as imagens precisa ser construídas novamente utilizando o compose.
+- docker-compose up | Comando usado junto com a flag anterior.
+    - Exemplo: docker-compose up -d --build
+
+- DESCENDO TODOS OS SERVIÇOS!
+
+- O ato de parar a excução de todos os seriços do compose é chamado de descer.
+
+- docker-compose down | Comando utilizado para descer os serviços. Com esse comando, todos os containers serão parados e removidos.
+
+- SUBINDO SERVIÇOS ESPECÍFICOS!
+
+- docker-compose up <serviço> | Para subir apenas parte dos serviços ou um serviço específico.
+
+- VISUALIZANDO OS LOGS DOS SERVIÇOS!
+
+- docker-compose logs <nome-do-serviço> | Para ver os logs de serviços  de maneira semelhante como fazemos unitariamente com os containers.
+    - Aqui, é possível especificar um serviço para visualizar seus logs ou ver todos os logs de todo o ambiente, conforme o arquivo do Compose.
+
+- docker-compose logs <serviço> | Visualizando os logs do serviço.
+
+- docker-compose logs --tail 5 database | A flag | --tail | é usada para limitar a quantidade de linhas de logs retornadas pelo comando, seguido do número de linhas.
+
+- -f ou --follow | Usadas para acompanhar em tempo real as saídas dos containers. Para sair, use | Ctrl+C | ou | Command+C |
+
+- ARQUIVOS COMPOSE MAIS ROBUSTOS!
+
+- Criar volumes: são pastas dentro de um serviço que é persistente, ou seja, mesmo após descer o serviço, esta pasta ainda mantém seus arquivos na próxima vez que os serviços subirem.
+
+- Criar redes virtuais: onde alguns serviços podem se comunicar apenas em uma rede virtual #1, enquanto outros serviços podem se comunicar apenas em uma rede virtual #2.
+
+- <nome-do-volume>:<caminho-no-container-para-montar> | No serviço database, o caminho | /data/db | será persistido, mesmo se a gente descer e subir este serviço novamente! Exemplo: 
+    volumes:
+      - dados-do-banco:/data/db    # nome do disco virtual : caminho no container
+      - Por que mapear o caminho “/data/db”? 🤔 como este banco de dados é um MongoDB, seus dados são armazenados nesta pasta específica, segundo sua documentação.
+      - Também houve um mapeamento de volume no serviço de front-end! Na nova chave | volumes | a pasta do computador local | ./logs | é mapeada para uma pasta dentro do serviço de frontend | /var/log/frontend |
+      - Dessa forma, não é necessário criar volumes virtuais, pois estamos usando uma pasta do nosso próprio computador!
+      Exemplo:
+          volumes:
+            - ./logs:/var/log/frontend    # caminho no computador : caminho no container
+
+- CRIANDO REDES VIRTUAIS!
+
+- O Compose nos permite criar múltiplas redes virtuais entre os serviços. Isso é muito importante, pois nos permite criar arquiteturas mais seguras.
+    - O serviço front-end só precisa se comunicar diretamente com o back-end;
+    - O serviço back-end precisa se comunicar tanto com o front-end quanto com o database;
+    - O serviço database só precisa se comunicar diretamente com o back-end.
+
+- networks | Nova chave criada. Explicação:
+    - Em cada linha declaramos o nome de uma nova rede virtual;
+    - As redes virtuais permitem criar isolamento entre os serviços;
+    - Ao utilizar esta chave, o Compose não vai mais criar a rede virtual padrão, como estava fazendo antes!
+
+- networks | essa chave também é adicionada em cada serviço. Explicação:
+    - Para o front-end, declaramos que ele está presente na rede-virtual-1;
+    - Para o back-end, declaramos que ele está presente na rede-virtual-1 e na rede-virtual-2;
+    - Para o database, declaramos que ele está presente na rede-virtual-2.
+
+------------------------------------------
+
+- docker-compose up | Aceita a flag:
+- --scale service=<número-de-replicas> | Onde é possível configurar a quantidade de réplicas para um serviço.
+
+- O Compose chama os containers orquestrados de serviço para possibilitar a criação de várias réplicas, desde que a situação se mostre necessária para isso. 
