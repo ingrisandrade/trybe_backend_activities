@@ -1,0 +1,100 @@
+- docker <comando> <subcomando> <parâmetros> | É o formato padrão para comandos não-abreviados no CLI.
+
+- docker images | Para visualizar todas as imagens Docker que já estão presentes na máquina.
+
+- docker container ls | Para listar todos os containers em execução neste momento na máquina.
+
+- docker container ls -a | Para visualizar todos os containers atuais, incluindo os que estão em execução e também parados.
+
+- docker container run <flags>? <imagem>:<tag> <argumentos>? | Para executar um container utilizando a imagem identificada pelo <imagem>:<tag>.
+  Exemplo utilizando a imagem Docker alpine e a tag 3.14:
+  docker container run alpine:3.14 echo "Hello World"
+  Os parâmetros <flags>? e <argumentos>? são opcionais (o que é sinalizado pelo uso de ?).
+
+--name <nome-da-sua-escolha> | Flag utilizada para dar um nome específico ao container criado.
+  Exemplo: 
+  docker container run --name meu-container alpine:3.14 echo "Hello World 2"
+
+- docker rm <nome-do-container> | Para remover um container específicos.
+  Obs.: Um container só pode ser removido com o comando | docker rm <nome-do-container> | se ele estiver parado ou tiver sua execução terminada. Ex.:
+  docker rm meu-container
+
+- --rm | A flag indica para o Docker que desejamos que um container seja removido ao final da sua execução. Ex.:
+  docker container run --rm alpine:3.14 echo "Hello World 3"
+
+  Obs.: A flag | --rm | vai remover apenas o container! A imagem criada ainda estará presente na máquina.
+
+- -d ou --detach | Qualquer uma dessas duas flags faz com que a execução do container ocorra em segundo plano, ou seja, embora não esteja visível, o container executará de forma assíncrona.
+  No exemplo trocamos o argumento echo pela execução do programa sleep, que fará com que o container continue sua execução por 300 segundos (5 minutos):
+  docker container run --rm -d alpine:3.14 sleep 300
+
+- docker stop -t 0 <nome-do-container>  | Este comando força o container a terminar sua execução atual. No caso do sleep é preciso usar a flag | -t 0 | para forçar o comando.
+
+- docker exec -it <nome-do-container> <comando-a-ser-executado> | Acessando o terminal do container. Ex.:
+  docker exec -it meu-container sh
+  ps aux
+  .
+  .
+  .
+  .
+  exit
+
+Obs.: -t | Solicita a criação de uma sessão de terminal;
+      -i | Necessária para que a sessão seja interativa;
+      sh | Comando executado, por ser um programa de terminal linux.
+
+      ps aux | Comando executado já dentro do programa;
+      exit | Comando usado para sair do terminal.
+
+- ctrl p ctrl q | Atalho para sair do terminal sem derrubar o processo.
+
+- docker container run -dit --name ubuntu04 ubuntu bash | Executa sem abrir o terminal.
+
+- docker container ls --filter name=ubuntu | Pega só os containers que tem o nome ubuntu(neste exemplo).
+
+- docker logs <flags> <nome-do-container> | Comando para que seja possível a visualização das informações do container sem precisar se conectar diretamente ao terminal do container.
+
+- docker system prune -f | Olhar na aula ao vivo do course.
+
+- docker container rm -f $(docker ls -qa) | Apaga todos os containers.
+  O | -qa | pega todos os ids.
+
+- docker container create -it --name container node:18-alpine | O | create | cria o container sem inicializá-lo. Vai deixar o container pronto para que ele seja executado.
+
+- docker attach <id-do-container> | É uma forma de ganhar acesso ao terminal do container.
+
+- docker top | Traz as informações sobre os processos que estão sendo rodados dentro do container. É útil para quando estamos os rodando em segundo plano.
+  docker top meu-container
+
+- docker container prune | Remove todos os containers inativos do computador.
+
+- docker container -l | Pega o último container que foi criado.
+
+- docker container start <id-do-container> | Inicia um container que já está parado na lista.
+
+- docker container rm -f <id-do-container> | Força a remoção de um container específico.
+
+- docker container run -it <imagem>:<tag> | Cria e executa um container no modo interativo utilizando uma imagem como referência. Ex.:
+  docker container run -it debian:stable-slim
+  (Ainda com o container em execução, digitar):
+  cat /etc/*-release | que vai retornar os dados da distribuição Debian que será rodada dentro do container.
+  exit | Para sair do terminal.
+
+REVISÃO DO CONTEÚDO DO DIA 1:
+
+  Docker: conjunto de ferramentas (Daemon, API, CLI) para gerenciar imagens e containers.
+
+    Arquivo Dockerfile: arquivo com linguagem própria, com os passos necessários para criar uma nova imagem Docker usando o código-fonte de um projeto.
+
+    Imagem Docker: é o projeto “compactado”, que foi construído de acordo com os passos contidos no arquivo Dockerfile. Pode ser usado como base para criar novas imagens Docker.
+
+    Container: é a execução de projeto através da sua imagem Docker já construída anteriormente.
+
+    Registry: é o local remoto onde podemos enviar e baixar imagens Docker. Um registry pode ser público ou privado.
+
+    Docker Hub:
+
+    É o registry oficial da empresa Docker Inc.
+    Ele é público, porém possui alguns limites.
+    É possível assinar o serviço para utilizá-lo como registry privado.
+
