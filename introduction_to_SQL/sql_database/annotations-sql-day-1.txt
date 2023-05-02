@@ -24,9 +24,12 @@
       - -p | Indica qual porta no nosso sistema operacional o docker estará em funcionamento. A porta | 3306 do lado esquerdo | é a porta do nosso sistema, que receberá o container e a porta | 3306 lado direito | é a porta do container. Obs.: 3306 é a porta padrão do MySQL.
       - run | É responsável por criar e iniciar o container;
 
-- docker exec -it container-mysql bash | Para visualizar quais bancos de dados estão disponíveis, através do modo interativo do docker.
+      - docker container stop container-mysql | Usado para parar o container.
+      - docker container start container-mysql | Usado para voltar a execução do container.
+      - docker container rm container-mysql | Usado para excluir o container.
 
-- mysql -u root -p | Para acessar o mysql dentro do container. Obs.: Utiliza-se o usuário root, que é o padrào da imagem do MySQL.
+- docker exec -it container-mysql bash | Para visualizar quais bancos de dados estão disponíveis, através do modo interativo do docker.
+    - mysql -u root -p | Para acessar o mysql dentro do container. Obs.: Utiliza-se o usuário root, que é o padrào da imagem do MySQL.
 
 - SHOW DATABASES; | Para ver todos os bancos de dados que estão instalados atualmente.
 
@@ -47,5 +50,7 @@
 
 -  CREATE DATABASE nome_do_banco_de_dados; | Criar um banco de dados.
     -- Exemplo de saída: CREATE DATABASE trybe;
+
+- CONSTRAINTS(RESTRIÇÕES), CHAVES PRIMÁRIAS E CHAVES ESTRANGEIRAS.
 
 
