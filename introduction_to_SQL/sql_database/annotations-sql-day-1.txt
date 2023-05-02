@@ -66,3 +66,8 @@
     - FOREIGN KEY | Garante que o valor seja uma chave estrangeira da tabela, ou seja, faça referência à chave primária (valor em uma coluna com a constraint PRIMARY KEY) de outra tabela, permitindo um relacionamento entre tabelas.
 
     - DEFAULT | Garante que, caso nenhum valor seja inserido na coluna (ou caso a pessoa usuária insira um valor nulo), a constraint colocará o valor padrão passado para ela.
+
+- ENTIDADE.
+
+- A entidade é a tabela dentro de um banco de dados e as propriedades fazem parte dessa tabela.
+    - Em alguns desses casos, as entidades são individuais e não se relacionam entre si, porém, às vezes, elas são ligadas umas às outras através de relacionamentos
