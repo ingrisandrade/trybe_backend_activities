@@ -71,3 +71,13 @@
 
 - A entidade é a tabela dentro de um banco de dados e as propriedades fazem parte dessa tabela.
     - Em alguns desses casos, as entidades são individuais e não se relacionam entre si, porém, às vezes, elas são ligadas umas às outras através de relacionamentos
+
+- Para não precisarmos duplicar dados em tabelas diferentes, é possível estabelecer relacionamentos entre as tabelas.
+
+- TIPOS DE RELACIONAMENTOS:
+
+    - 1:1 (um para um) | Uma linha da Tabela A só deve possuir uma linha correspondente na tabela B ou vice-versa.
+
+    - 1:N (um para muitos) ou N:1 (muitos para um) | Esse é um dos tipos mais comuns de relacionamento. Em cenários assim, uma linha na tabela A pode ter várias linhas correspondentes na tabela B, mas uma linha da tabela B só pode possuir uma linha correspondente na tabela A.
+
+    - N:N (muitos para muitos) | O tipo de relacionamento muitos para muitos acontece quando uma linha na tabela A pode possuir muitas linhas correspondentes na tabela B e vice-versa.
