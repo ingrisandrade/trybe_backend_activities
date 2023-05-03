@@ -81,3 +81,11 @@ Observaçcões feitas durante o desenvolvimento de um exercício:
     - SELECT city, country_id FROM city;
 
           - Dessa forma, após o FROM o DB já não precisa mais ser referenciado.
+
+- CONCAT - juntando duas ou mais colunas.
+
+    - SELECT * FROM sakila.actor; | Retorna a tabela completa.
+    - SELECT CONCAT(first_name, last_name) FROM sakila.actor; | Retorna nome e sobrenorme junto.
+    - SELECT CONCAT(first_name, " ", last_name) FROM sakila.actor; | Retorna com um espaço entre nome e sobrenome.
+    - SELECT CONCAT(first_name, " ", last_name) AS "Nome Completo" FROM sakila.actor; | Retorna com espaćo entre nome e sobrenome e com a coluna nomeada por "Nome Completo".
+
