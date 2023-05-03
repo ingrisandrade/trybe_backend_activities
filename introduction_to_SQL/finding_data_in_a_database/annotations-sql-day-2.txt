@@ -44,5 +44,25 @@
 
 - Usar o | SELECT | para gerar valores e usar o | AS | para dar nomes às colunas.
 
-- 
+    - Rode cada um deles em uma janela de query para verificar os resultados:
 
+        - SELECT 'Olá, bem-vindo ao SQL!';
+        - SELECT 10;
+        - SELECT now();
+        - SELECT 20 * 2;
+        - SELECT 50 / 2;
+        - SELECT 18 AS idade;
+        - SELECT 2019 AS ano;
+        - SELECT 'Rafael', 'Martins', 25, 'Desenvolvedor Web';
+        - SELECT 'Rafael' AS nome, 'Martins' AS sobrenome, 25 AS idade, 'Desenvolvedor Web' AS 'Área de atuação';
+
+    - Observações feitas após rodar os comandos sem alterar o banco de dados:
+
+        - É possível gerar e calcular valores usando apenas SELECT valor_a_ser_calculado_ou_exibido;
+
+        - A palavra-chave AS permite dar nome às colunas para que elas façam mais sentido quando estiver lendo os resultados.
+            - Obs.: Caso o nome tenha mais de uma palavra, deve-se usar aspas simples para nomear as colunas;
+
+        - Sempre que finalizar uma query com ponto e vírgula ( ; );
+
+        - Usar as palavras-chave (reservadas) em maiúsculo. Isso é uma convenção para facilitar a leitura da query.
