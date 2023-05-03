@@ -45,10 +45,10 @@
 
 - SHOW TABLES; | Para retornar todas as tabelas inicializadas no seu server.
 
--  DESCRIBE nome_da_tabela; | Visualizar estrutura de uma tabela.
+- DESCRIBE nome_da_tabela; | Visualizar estrutura de uma tabela.
     -- Exemplo de saída: DESCRIBE students;
 
--  CREATE DATABASE nome_do_banco_de_dados; | Criar um banco de dados.
+- CREATE DATABASE nome_do_banco_de_dados; | Criar um banco de dados.
     -- Exemplo de saída: CREATE DATABASE trybe;
 
 - CONSTRAINTS(RESTRIÇÕES), CHAVES PRIMÁRIAS E CHAVES ESTRANGEIRAS.

@@ -39,3 +39,10 @@
 
         - TRANSACTION | Comandos que definem onde, como e em que escopo suas transações são executadas.
 
+
+- SELECT, o primeiro passo:
+
+- Usar o | SELECT | para gerar valores e usar o | AS | para dar nomes às colunas.
+
+- 
+
