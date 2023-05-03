@@ -66,3 +66,18 @@
         - Sempre que finalizar uma query com ponto e vírgula ( ; );
 
         - Usar as palavras-chave (reservadas) em maiúsculo. Isso é uma convenção para facilitar a leitura da query.
+
+Observaçcões feitas durante o desenvolvimento de um exercício:
+
+- SELECT city, country_id FROM sakila.city;
+    - Neste comando eu posso usar o * após o select e ele vai retornar todas as tabelas;
+    - Caso eu queira apenas uma tabela posso trocar o * pelo nome da tabela;
+    - Se eu quiser mais de uma tabela posso adicionar os nomes que eu quero e separá-las com vígula.
+        - Lembrando que as tabelas serão exibidas seguindo a ordem do comando.
+
+- E caso opte por não usar sempre o nome do DB para referenciá-lo é possível já selecioná-lo por padrão com o seguinte comando:
+
+    - USE sakila;
+    - SELECT city, country_id FROM city;
+
+          - Dessa forma, após o FROM o DB já não precisa mais ser referenciado.
