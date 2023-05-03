@@ -89,3 +89,11 @@ Observaçcões feitas durante o desenvolvimento de um exercício:
     - SELECT CONCAT(first_name, " ", last_name) FROM sakila.actor; | Retorna com um espaço entre nome e sobrenome.
     - SELECT CONCAT(first_name, " ", last_name) AS "Nome Completo" FROM sakila.actor; | Retorna com espaćo entre nome e sobrenome e com a coluna nomeada por "Nome Completo".
 
+- DISTINCT - evitando dados repetidos.
+
+- SELECT DISTINCT first_name FROM sakila.actor;
+
+    - Basicamente esse comando serve para remover dados duplicados.
+    - Os dados duplicados não serão excluidos, apenas não serão exibidos.
+
+
